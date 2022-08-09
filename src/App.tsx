@@ -10,6 +10,7 @@ import { GridItem } from './components/GridItem';
 
 import { GridItemType } from './types/GridItemType';
 import { items } from './data/items';
+import { formatTimeElapsed } from './helpers/formatTimeElapsed';
 
 
 const App = () => {
@@ -21,6 +22,13 @@ const App = () => {
 
 
   useEffect(() => resetAndCreateGrid(), []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (playing) setTimeElapsed(timeElapsed + 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [playing, timeElapsed]);
 
   const resetAndCreateGrid = () => {
     // passo 1 - resetar o jogo
@@ -64,7 +72,7 @@ const App = () => {
         </C.LogoLink>
 
         <C.InfoArea>
-          <InfoItem label='Tempo' value='00:00' />
+          <InfoItem label='Tempo' value={formatTimeElapsed(timeElapsed)} />
           <InfoItem label='Movimentos' value='0' />
         </C.InfoArea>
 
